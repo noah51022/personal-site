@@ -2,39 +2,49 @@
 const projects = [
   {
     title: "Project One",
-    description: "A brief description of the project and the technologies used. This project showcases modern web development practices and innovative solutions.",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80",
-    link: "#"
+    description:
+      "A brief description of the project and the technologies used. This project showcases modern web development practices and innovative solutions.",
+    image:
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80",
+    link: "#",
   },
   {
     title: "Project Two",
-    description: "Another project description showcasing your skills and expertise. Highlighting the impact and results achieved through thoughtful development.",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80",
-    link: "#"
-  }
+    description:
+      "Another project description showcasing your skills and expertise. Highlighting the impact and results achieved through thoughtful development.",
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80",
+    link: "#",
+  },
 ];
 ---
 
-<section id="projects" class="py-16 md:py-24">
-  <h2 class="text-3xl font-bold mb-12 text-raisin">Featured Projects</h2>
-  
-  <div class="grid md:grid-cols-2 gap-8">
-    {projects.map(project => (
-      <article class="group bg-white">
-        <a href={project.link} class="block">
-          <div class="aspect-video overflow-hidden mb-4">
-            <img 
-              src={project.image} 
-              alt={project.title}
-              class="w-full h-full object-cover transition-transform group-hover:scale-105"
-            />
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2 text-raisin group-hover:text-olivine transition-colors">{project.title}</h3>
-            <p class="text-raisin/60">{project.description}</p>
-          </div>
-        </a>
-      </article>
-    ))}
+<section id="projects" class="py-16 md:py-24 w-full px-4 sm:px-6 lg:px-8">
+  <h2 class="text-3xl font-bold mb-12 text-raisin mt-8 md:mt-12">
+    Featured Projects
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+    {
+      projects.map((project) => (
+        <article class="group bg-white w-full">
+          <a href={project.link} class="block">
+            <div class="aspect-video overflow-hidden mb-4">
+              <img
+                src={project.image}
+                alt={project.title}
+                class="w-full h-full object-cover transition-transform group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2 text-raisin group-hover:text-olivine transition-colors">
+                {project.title}
+              </h3>
+              <p class="text-raisin/60">{project.description}</p>
+            </div>
+          </a>
+        </article>
+      ))
+    }
   </div>
 </section>

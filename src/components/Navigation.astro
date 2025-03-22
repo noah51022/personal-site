@@ -1,39 +1,233 @@
 ---
 const navItems = [
-  { label: "Projects", href: "/projects" },
   { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
   { label: "Contact", href: "/contact" },
 ];
+
+const pathname = Astro.url.pathname;
+const isHomePage = pathname === "/";
 ---
 
-<header class="py-6 md:py-8 border-b border-raisin/10 bg-magnolia">
-  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<header
+  class:list={[
+    "w-full z-20",
+    isHomePage
+      ? "absolute top-0 left-0 right-0 pt-6 md:pt-8"
+      : "relative border-b border-raisin/10 bg-white-smoke shadow-sm py-6 md:py-8",
+  ]}
+>
+  <nav class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between">
-      <a href="/" class="text-xl font-bold text-raisin hover:text-olivine transition-colors">
-        YourName
+      <a
+        href="/"
+        class:list={[
+          "text-xl font-semibold hover:text-olivine transition-colors",
+          isHomePage ? "text-magnolia" : "text-raisin",
+        ]}
+      >
+        Noah Torres
       </a>
-      
+
       <ul class="hidden md:flex items-center gap-8">
-        {navItems.map(item => (
-          <li>
-            <a 
-              href={item.href}
-              class="text-sm text-raisin/80 hover:text-olivine transition-colors"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  "text-base hover:text-olivine transition-colors relative nav-link",
+                  isHomePage ? "text-magnolia" : "text-raisin/80",
+                  pathname === item.href ? "font-medium" : "",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
 
-      <button 
-        class="md:hidden text-raisin hover:text-olivine transition-colors"
+      <button
+        id="mobileMenuButton"
+        class:list={[
+          "md:hidden hover:text-olivine transition-colors relative z-30",
+          isHomePage ? "text-magnolia" : "text-raisin",
+        ]}
         aria-label="Toggle menu"
+        aria-expanded="false"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 hamburger-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            class="transition-transform duration-300"></path>
         </svg>
       </button>
     </div>
+
+    <!-- Mobile menu, hidden by default -->
+    <div
+      id="mobileMenu"
+      class="md:hidden fixed top-0 right-0 h-screen bg-white-smoke w-0 overflow-hidden transition-all duration-300 ease-in-out z-20"
+    >
+      <div class="pt-24 pr-8 pl-8 pb-8 flex flex-col items-end">
+        <ul class="flex flex-col space-y-6 items-end">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    "text-lg hover:text-olivine transition-colors relative nav-link mobile-nav-link",
+                    pathname === item.href ? "font-medium" : "",
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Overlay for closing the menu when clicking outside -->
+    <div id="menuOverlay" class="fixed inset-0 bg-raisin/20 z-10 hidden"></div>
   </nav>
 </header>
+
+<style>
+  /* Hover underline effect for navigation links */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Special case for mobile links */
+  .mobile-nav-link::after {
+    left: auto;
+    right: 0;
+  }
+</style>
+
+<script>
+  // Add JavaScript to toggle mobile menu
+  document.addEventListener("DOMContentLoaded", () => {
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const hamburgerIcon = document.querySelector(".hamburger-icon");
+    const menuOverlay = document.getElementById("menuOverlay");
+
+    // Function to close the menu
+    const closeMenu = () => {
+      if (mobileMenuButton) {
+        mobileMenuButton.setAttribute("aria-expanded", "false");
+      }
+
+      if (mobileMenu) {
+        mobileMenu.style.width = "0";
+      }
+
+      // Reset hamburger icon
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.remove("rotate-45");
+        hamburgerIcon.classList.remove("text-raisin");
+
+        setTimeout(() => {
+          document
+            .querySelectorAll(".hamburger-icon path")[0]
+            .setAttribute("d", "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5");
+        }, 150);
+      }
+
+      // Hide overlay
+      if (menuOverlay) {
+        menuOverlay.classList.add("hidden");
+      }
+    };
+
+    if (mobileMenuButton && mobileMenu && menuOverlay) {
+      // Toggle menu on button click
+      mobileMenuButton.addEventListener("click", () => {
+        // Toggle the menu visibility
+        const isExpanded =
+          mobileMenuButton.getAttribute("aria-expanded") === "true";
+
+        // Toggle aria-expanded
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          isExpanded ? "false" : "true",
+        );
+
+        // Animate hamburger icon
+        if (hamburgerIcon) {
+          if (isExpanded) {
+            hamburgerIcon.classList.remove("rotate-45");
+            hamburgerIcon.classList.remove("text-raisin");
+
+            setTimeout(() => {
+              document
+                .querySelectorAll(".hamburger-icon path")[0]
+                .setAttribute(
+                  "d",
+                  "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5",
+                );
+            }, 150);
+          } else {
+            document
+              .querySelectorAll(".hamburger-icon path")[0]
+              .setAttribute("d", "M6 18L18 6M6 6l12 12");
+
+            // Make icon darker when menu is open
+            hamburgerIcon.classList.add("text-raisin");
+
+            setTimeout(() => {
+              hamburgerIcon.classList.add("rotate-45");
+            }, 50);
+          }
+        }
+
+        // Toggle menu width and overlay
+        if (isExpanded) {
+          mobileMenu.style.width = "0";
+          menuOverlay.classList.add("hidden");
+        } else {
+          mobileMenu.style.width = "75%";
+          menuOverlay.classList.remove("hidden");
+        }
+      });
+
+      // Close menu when clicking on overlay
+      menuOverlay.addEventListener("click", closeMenu);
+
+      // Close menu when pressing escape key
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          mobileMenuButton.getAttribute("aria-expanded") === "true"
+        ) {
+          closeMenu();
+        }
+      });
+    }
+  });
+</script>

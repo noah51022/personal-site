@@ -7,10 +7,13 @@ export default {
         sans: ['Inter Tight', 'sans-serif'],
       },
       colors: {
+        'white-smoke': '#F5F5F5',
         raisin: '#232528',
         olivine: '#9CB380',
         magnolia: '#F7F0F5',
         umber: '#8B5D33',
+        lion: '#BE9474',
+        oak: '#d0ac81'
       },
     },
   },
