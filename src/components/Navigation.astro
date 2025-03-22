@@ -1,0 +1,39 @@
+---
+const navItems = [
+  { label: "Projects", href: "/projects" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<header class="py-6 md:py-8 border-b border-raisin/10 bg-magnolia">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between">
+      <a href="/" class="text-xl font-bold text-raisin hover:text-olivine transition-colors">
+        YourName
+      </a>
+      
+      <ul class="hidden md:flex items-center gap-8">
+        {navItems.map(item => (
+          <li>
+            <a 
+              href={item.href}
+              class="text-sm text-raisin/80 hover:text-olivine transition-colors"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <button 
+        class="md:hidden text-raisin hover:text-olivine transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>

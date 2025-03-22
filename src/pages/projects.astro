@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    title: "Project One",
+    description: "A comprehensive description of the project, including the problem it solves and the impact it has made.",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80",
+    link: "#",
+    role: "Lead Developer",
+    duration: "3 months",
+    technologies: ["React", "Node.js", "TypeScript"]
+  },
+  {
+    title: "Project Two",
+    description: "Another detailed project description that showcases the depth of work and technical challenges overcome.",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80",
+    link: "#",
+    role: "Full-stack Developer",
+    duration: "2 months",
+    technologies: ["Next.js", "Tailwind", "Prisma"]
+  }
+];
+---
+
+<Layout title="Projects - Your Name">
+  <main class="py-16">
+    <h1 class="text-4xl font-bold mb-12 text-raisin">Projects</h1>
+    <div class="space-y-24">
+      {projects.map(project => (
+        <article class="bg-white p-8">
+          <div class="aspect-video overflow-hidden mb-8">
+            <img 
+              src={project.image} 
+              alt={project.title}
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h2 class="text-2xl font-semibold mb-4 text-raisin">{project.title}</h2>
+          <p class="text-raisin/80 mb-6 max-w-2xl">{project.description}</p>
+          <dl class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div>
+              <dt class="text-sm font-medium text-raisin/60">Role</dt>
+              <dd class="mt-1 text-raisin">{project.role}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-raisin/60">Duration</dt>
+              <dd class="mt-1 text-raisin">{project.duration}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-raisin/60">Technologies</dt>
+              <dd class="mt-1 text-raisin">{project.technologies.join(", ")}</dd>
+            </div>
+          </dl>
+          <a 
+            href={project.link}
+            class="inline-flex items-center justify-center px-6 py-3 bg-raisin text-magnolia hover:bg-olivine transition-colors"
+          >
+            View Project
+          </a>
+        </article>
+      ))}
+    </div>
+  </main>
+</Layout>
